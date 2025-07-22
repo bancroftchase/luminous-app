@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>Luminous AI - Beauty Companion</title>
+<meta name="theme-color" content="#B8860B" />
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, sans-serif; background:#2C2C2C; color:#fff; }
+    .container { max-width:414px; margin:auto; background:#2C2C2C; min-height:100vh; display:flex; flex-direction:column; }
+    .header { background:#2C2C2C; padding:20px; text-align:center; border-bottom:1px solid #444; }
+    .logo { font-size:28px; font-weight:bold; background:linear-gradient(135deg,#B8860B,#DAA520); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .main-content { flex:1; background:#F8F8F8; padding:20px; }
+    .welcome-section { background:#fff; border-radius:16px; padding:20px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.1); margin-bottom:20px; }
+    .welcome-title { font-size:18px; font-weight:700; color:#2C2C2C; margin-bottom:10px; }
+    .quick-actions { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:15px; }
+    .quick-action-btn { background:linear-gradient(135deg,#B8860B,#DAA520); color:#fff; border:none; border-radius:10px; padding:12px; font-size:14px; font-weight:bold; cursor:pointer; }
+    .categories { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .card { background:#fff; color:#2C2C2C; border-radius:12px; padding:12px; text-align:center; font-size:14px; font-weight:600; box-shadow:0 2px 8px rgba(0,0,0,0.1); cursor:pointer; }
+    .card-icon { font-size:22px; margin-bottom:8px; }
+    .bottom-nav { background:#fff; height:70px; display:flex; align-items:center; justify-content:space-around; border-top:1px solid #ddd; position:fixed; bottom:0; width:100%; max-width:414px; }
+    .nav-item { text-align:center; font-size:12px; color:#666; cursor:pointer; }
+    .nav-item.active { color:#B8860B; font-weight:bold; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">✨ Luminous AI</div>
+    </div>
+
+    <div class="main-content">
+        <div class="welcome-section">
+            <div class="welcome-title">Your Beauty Journey Starts Here</div>
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="openChat('Global Beauty')">🌍 Global Beauty</button>
+                <button class="quick-action-btn" onclick="openChat('K-Beauty')">🌸 K-Beauty</button>
+                <button class="quick-action-btn" onclick="openChat('Luxury Skincare')">💎 Luxury Skincare</button>
+                <button class="quick-action-btn" onclick="openChat('Natural Beauty')">🌿 Natural Beauty</button>
+            </div>
+        </div>
+
+        <h3 style="color:#2C2C2C; margin-bottom:10px;">Explore Features</h3>
+        <div class="categories">
+            <div class="card" onclick="openChat('Anti-aging Products')">
+                <div class="card-icon">🧘</div>
+                Anti-aging
+            </div>
+            <div class="card" onclick="openChat('Eye Care Products')">
+                <div class="card-icon">👁️</div>
+                Eye Care
+            </div>
+            <div class="card" onclick="openChat('Skin Analysis')">
+                <div class="card-icon">✨</div>
+                Skin Analysis
+            </div>
+            <div class="card" onclick="openChat('Facial Analysis')">
+                <div class="card-icon">😊</div>
+                Facial Analysis
+            </div>
+            <div class="card" onclick="openChat('Korean Beauty Products')">
+                <div class="card-icon">🌸</div>
+                K-Beauty
+            </div>
+            <div class="card" onclick="openChat('Tanning Products')">
+                <div class="card-icon">☀️</div>
+                Tanning
+            </div>
+            <div class="card" onclick="openChat('Eyelashes')">
+                <div class="card-icon">👁️‍🗨️</div>
+                Eyelashes
+            </div>
+            <div class="card" onclick="openChat('Amazon Beauty Finds')">
+                <div class="card-icon">🛒</div>
+                Basket
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="openChat('Home')">🏠<br>Home</div>
+        <div class="nav-item" onclick="openChat('Sign In')">🔑<br>Sign In</div>
+        <div class="nav-item" onclick="openChat('Create Account')">👤<br>Create</div>
+        <div class="nav-item" onclick="openChat('Catalog')">📚<br>Catalog</div>
+        <div class="nav-item" onclick="openChat('Ask AI')">💬<br>Ask Me</div>
+    </div>
+</div>
+
+<script>
+function openChat(query) {
+    window.location.href = `chat.html?query=${encodeURIComponent(query)}`;
+}
+</script>
+</body>
+</html>

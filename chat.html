@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Beauty Chat - Luminous AI</title>
+  <meta name="theme-color" content="#B8860B" />
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Arial, sans-serif; background:#2C2C2C; color:#fff; }
+    .container { max-width:414px; margin:auto; background:#2C2C2C; min-height:100vh; display:flex; flex-direction:column; }
+    .header { background:#2C2C2C; padding:20px; text-align:center; border-bottom:1px solid #444; position:relative; }
+    .back-btn { position:absolute; left:20px; top:20px; background:linear-gradient(135deg,#B8860B,#DAA520); color:#fff; border:none; border-radius:20px; padding:6px 12px; cursor:pointer; }
+    .logo { font-size:24px; font-weight:bold; background:linear-gradient(135deg,#B8860B,#DAA520); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .chat-area { flex:1; overflow-y:auto; padding:20px; background:#F8F8F8; color:#333; }
+    .message { margin-bottom:12px; display:flex; }
+    .message.user { justify-content:flex-end; }
+    .bubble { max-width:75%; padding:12px 16px; border-radius:16px; line-height:1.4; }
+    .bubble.user { background:#DAA520; color:#2C2C2C; border-bottom-right-radius:4px; }
+    .bubble.bot  { background:#444; color:#fff; }
+    .message-form { display:flex; border-top:1px solid #444; background:#2C2C2C; }
+    .message-input { flex:1; padding:12px; border:none; border-radius:20px; margin:10px; }
+    .send-btn { background:linear-gradient(135deg,#B8860B,#DAA520); border:none; padding:12px 16px; border-radius:20px; color:#fff; font-weight:bold; margin:10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <button class="back-btn" onclick="location.href='index.html'">← Back</button>
+      <div class="logo">✨ Luminous AI</div>
+    </div>
+
+    <div id="chatArea" class="chat-area">
+      <div class="message bot">
+        <div class="bubble bot">Hi! Ask me about beauty products.</div>
+      </div>
+    </div>
+
+    <form id="messageForm" class="message-form">
+      <input id="messageInput" class="message-input" type="text" placeholder="Type your message…" autocomplete="off"/>
+      <button type="submit" class="send-btn">Send</button>
+    </form>
+  </div>
+
+  <script>
+    // Serverless endpoint on Vercel
+    const API_PATH = '/api/ask';
+
+    function addMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.className = 'message ' + sender;
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + sender;
+      bubble.textContent = text;
+      msg.appendChild(bubble);
+      document.getElementById('chatArea').appendChild(msg);
+      msg.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function sendToBackend(message) {
+      addMessage(message, 'user');
+      try {
+        const res = await fetch(`${API_PATH}?message=${encodeURIComponent(message)}`);
+        const json = await res.json();
+        if (json.error) {
+          addMessage('Error: ' + json.error, 'bot');
+        } else if (json.products?.length) {
+          json.products.forEach(p =>
+            addMessage(`${p.name} — ${p.price}\n${p.description}\n(${p.country})`, 'bot')
+          );
+        } else {
+          addMessage('No products found.', 'bot');
+        }
+      } catch (e) {
+        addMessage('Error: ' + e.message, 'bot');
+      }
+    }
+
+    document.getElementById('messageForm')
+      .addEventListener('submit', e => {
+        e.preventDefault();
+        const input = document.getElementById('messageInput');
+        const txt = input.value.trim();
+        if (!txt) return;
+        input.value = '';
+        sendToBackend(txt);
+      });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const q = new URLSearchParams(location.search).get('query') || 'Home';
+      sendToBackend(q);
+    });
+  </script>
+</body>
+</html>
