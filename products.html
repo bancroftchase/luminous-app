@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Beauty Products - Luminous AI</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#B8860B">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-charcoal: #2C2C2C;
+            --luminous-gold: #B8860B;
+            --pearl-white: #F8F8F8;
+            --radiant-rose: #E8D5D5;
+            --premium-gradient: linear-gradient(135deg, #B8860B, #DAA520);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--primary-charcoal);
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: var(--primary-charcoal);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .header {
+            background: var(--primary-charcoal);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #3A3A3A;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--premium-gradient);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            background: var(--premium-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .main-content {
+            background: var(--pearl-white);
+            min-height: calc(100vh - 80px);
+            padding: 20px;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 25px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid var(--luminous-gold);
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background: transparent;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-tab {
+            background: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-tab.active {
+            background: var(--premium-gradient);
+            color: white;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 100px;
+            padding: 0 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            cursor: pointer;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .product-category {
+            background: var(--luminous-gold);
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--primary-charcoal);
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .product-brand {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .product-country {
+            font-size: 10px;
+            color: var(--luminous-gold);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .product-description {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.2;
+            flex: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .product-price {
+            font-size: 14px;
+            color: var(--luminous-gold);
+            font-weight: 700;
+        }
+
+        .save-btn {
+            background: var(--premium-gradient);
+            border: none;
+            border-radius: 15px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        .save-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .save-btn.saved {
+            background: #4CAF50;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .cart-btn {
+            background: var(--luminous-gold);
+            border: none;
+            border-radius: 15px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.1);
+            background: #DAA520;
+        }
+
+        .cart-btn.added {
+            background: #4CAF50;
+        }
+
+        .bottom-nav {
+            background: white;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            border-top: 1px solid #E0E0E0;
+            padding-bottom: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--luminous-gold);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            position: relative;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .cart-count {
+            background: #FF4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 8px;
+            padding: 2px 5px;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            min-width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .translator-dropdown {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            padding: 16px;
+            width: 280px;
+            display: none;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn-small::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .btn-small:hover::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .btn-cart {
+            background: var(--premium-gradient);
+            color: white;
+        }
+
+        .btn-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #666, #777);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #555, #666);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn-small:active {
+            transform: translateY(0);
+            transition: all 0.1s;
+        }
+
+        .load-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 134, 11, 0.4);
+        }
+
+        .load-more-container {
+            margin-bottom: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">← Back</a>
+            <div class="logo">✨ Beauty Products</div>
+        </div>
+
+        <div class="main-content">
+            <div class="search-bar">
+                <span>🔍</span>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search beauty products...">
+            </div>
+
+            <div class="filter-tabs" id="filterTabs">
+                <button class="filter-tab active" onclick="filterProducts('all')">All</button>
+                <button class="filter-tab" onclick="filterProducts('skincare')">Skincare</button>
+                <button class="filter-tab" onclick="filterProducts('makeup')">Makeup</button>
+                <button class="filter-tab" onclick="filterProducts('haircare')">Hair Care</button>
+                <button class="filter-tab" onclick="filterProducts('accessories')">Tools</button>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+
+            <div id="loadMoreContainer" class="load-more-container" style="text-align: center; padding: 20px; display: none;">
+                <button id="loadMoreBtn" class="load-more-btn" onclick="loadMoreProducts()" style="
+                    background: var(--premium-gradient);
+                    color: white;
+                    border: none;
+                    padding: 15px 30px;
+                    border-radius: 25px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
+                    transition: all 0.3s;
+                ">
+                    🌍 Load More Products
+                </button>
+                <div style="color: #666; font-size: 12px; margin-top: 8px;" id="productCount">
+                    Showing 25 of 2000+ products
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item" onclick="goToPage('index.html')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" onclick="goToPage('chat.html')">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Chat</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">🛍️</div>
+                <div class="nav-label">Products</div>
+            </div>
+            <div class="nav-item" onclick="showSavedProducts()">
+                <div class="nav-icon">💖</div>
+                <div class="nav-label">Saved</div>
+            </div>
+            <div class="nav-item" onclick="showCart()">
+                <div class="nav-icon">🛒<span id="cartCount" class="cart-count">0</span></div>
+                <div class="nav-label">Cart</div>
+            </div>
+            <div class="nav-item" onclick="toggleTranslator()">
+                <div class="nav-icon">🌍</div>
+                <div class="nav-label">Translate</div>
+            </div>
+        </div>
+
+        <div id="translatorDropdown" class="translator-dropdown">
+            <h3 style="margin: 0 0 12px 0; color: var(--primary-charcoal); font-size: 16px; text-align: center;">🌍 Translate Products</h3>
+            <select id="languageSelect" onchange="translateContent()" style="width: 100%; padding: 12px; border: 2px solid var(--luminous-gold); border-radius: 8px; font-size: 14px; background: white; cursor: pointer;">
+                <option value="en">English</option>
+                <option value="es">Español (Spanish)</option>
+                <option value="fr">Français (French)</option>
+                <option value="de">Deutsch (German)</option>
+                <option value="it">Italiano (Italian)</option>
+                <option value="pt">Português (Portuguese)</option>
+                <option value="ru">Русский (Russian)</option>
+                <option value="ja">日本語 (Japanese)</option>
+                <option value="ko">한국어 (Korean)</option>
+                <option value="ar">العربية (Arabic)</option>
+                <option value="zh">中文 (Chinese)</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let allProducts = [];
+        let filteredProducts = [];
+        let displayedProducts = [];
+        let currentDisplayCount = 25;
+        let userProfile = JSON.parse(localStorage.getItem('beautyProfile') || '{}');
+        let cart = JSON.parse(localStorage.getItem('beautyCart') || '[]');
+        let isTranslatorOpen = false;
+        let originalTexts = new Map();
+
+        // Load products from API or fallback
+        async function loadProducts() {
+            try {
+                console.log('🔄 Loading initial 25 products...');
+
+                // Load fallback products first for immediate display
+                loadFallbackProducts();
+
+                // Then try to enhance with API products
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        message: 'show me 50 diverse beauty products from all categories including French luxury, Korean beauty, Brazilian botanicals, American brands, German science, Japanese innovation, and global cosmetics with full descriptions',
+                        includeProducts: true,
+                        maxProducts: 50
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.products && data.products.length > 0) {
+                    // Merge API products with fallback products, removing duplicates
+                    const apiProducts = data.products.map(product => ({
+                        ...product,
+                        id: product.id || `prod_${Date.now()}_${Math.random()}`,
+                        description: product.description || generateProductDescription(product)
+                    }));
+
+                    // Combine and deduplicate
+                    const combinedProducts = [...allProducts];
+                    apiProducts.forEach(apiProduct => {
+                        if (!combinedProducts.some(existing => existing.name === apiProduct.name)) {
+                            combinedProducts.push(apiProduct);
+                        }
+                    });
+
+                    allProducts = combinedProducts;
+                    filteredProducts = allProducts.slice(0, 25); // Show first 25 by default
+                    displayProducts();
+                    updateFilterCounts();
+                    console.log(`✅ Loaded ${allProducts.length} total products (showing first 25)`);
+                    showToast(`📱 Showing first 25 of ${allProducts.length} products. Use search for more!`);
+                } else {
+                    console.log('⚠️ API returned no products, using fallback only');
+                    filteredProducts = allProducts.slice(0, 25);
+                    displayProducts();
+                }
+            } catch (error) {
+                console.error('🚨 Error loading products:', error);
+                filteredProducts = allProducts.slice(0, 25);
+                displayProducts();
+            }
+        }
+
+        // Generate detailed product descriptions
+        function generateProductDescription(product) {
+            const descriptions = {
+                'skincare': `Advanced ${product.category} formula designed to nourish and protect your skin. This premium product from ${product.country || 'international'} beauty experts delivers visible results with high-quality ingredients.`,
+                'makeup': `Professional-grade ${product.category} product perfect for creating stunning looks. Trusted by makeup artists worldwide, this ${product.country || 'global'} beauty essential offers long-lasting wear and vibrant colors.`,
+                'haircare': `Luxurious ${product.category} treatment that transforms your hair with every use. Enriched with natural ingredients and cutting-edge technology from ${product.country || 'leading'} beauty labs.`,
+                'accessories': `Premium beauty tool designed to enhance your routine. This ${product.country || 'internationally'} crafted accessory delivers professional results at home.`
+            };
+
+            return descriptions[product.category] || `High-quality beauty product from ${product.brand || 'premium brand'}. Experience the difference with this carefully formulated ${product.category || 'beauty'} essential.`;
+        }
+
+        // Generate massive product database (2000+ products)
+        function loadFallbackProducts() {
+            // Start with core products then generate more
+            const coreProducts = [
+                // Skincare Products
+                { name: "CeraVe Hydrating Cleanser", brand: "CeraVe", country: "USA", price: "$12", category: "skincare", description: "Gentle, non-foaming cleanser for dry skin" },
+                { name: "Hyaluronic Acid 2% + B5", brand: "The Ordinary", country: "Canada", price: "$8", category: "skincare", description: "Deep hydration serum" },
+                { name: "Hydro Boost Water Gel", brand: "Neutrogena", country: "USA", price: "$15", category: "skincare", description: "Lightweight hydrating moisturizer" },
+                { name: "Cicaplast Baume B5", brand: "La Roche-Posay", country: "France", price: "$15", category: "skincare", description: "Healing and soothing balm" },
+                { name: "Vitamin C Serum", brand: "Skinceuticals", country: "USA", price: "$166", category: "skincare", description: "Antioxidant protection serum" },
+                { name: "Retinol Cream", brand: "Neutrogena", country: "USA", price: "$25", category: "skincare", description: "Anti-aging night cream" },
+                { name: "Niacinamide Serum", brand: "The Ordinary", country: "Canada", price: "$7", category: "skincare", description: "Pore minimizing serum" },
+                { name: "Sunscreen SPF 50", brand: "EltaMD", country: "USA", price: "$37", category: "skincare", description: "Broad spectrum UV protection" },
+                { name: "Eye Cream", brand: "Kiehl's", country: "USA", price: "$52", category: "skincare", description: "Anti-aging eye treatment" },
+                { name: "Gentle Exfoliant", brand: "Paula's Choice", country: "USA", price: "$32", category: "skincare", description: "BHA liquid exfoliant" },
+                { name: "Ceramide Moisturizer", brand: "CeraVe", country: "USA", price: "$16", category: "skincare", description: "Barrier repair cream" },
+                { name: "Glycolic Acid Toner", brand: "Pixi", country: "UK", price: "$18", category: "skincare", description: "Exfoliating toner" },
+                { name: "Rosehip Oil", brand: "The Ordinary", country: "Canada", price: "$10", category: "skincare", description: "Regenerating facial oil" },
+                { name: "Micellar Water", brand: "Bioderma", country: "France", price: "$15", category: "skincare", description: "Gentle makeup remover" },
+                { name: "Clay Mask", brand: "Origins", country: "USA", price: "$34", category: "skincare", description: "Deep pore cleansing mask" },
+
+                // Makeup Products
+                { name: "Foundation 24H", brand: "Estée Lauder", country: "USA", price: "$52", category: "makeup", description: "Long-wearing liquid foundation" },
+                { name: "Concealer", brand: "Tarte", country: "USA", price: "$29", category: "makeup", description: "Full coverage concealer" },
+                { name: "Mascara Volume", brand: "Maybelline", country: "USA", price: "$9", category: "makeup", description: "Volumizing black mascara" },
+                { name: "Lipstick Matte", brand: "MAC", country: "Canada", price: "$20", category: "makeup", description: "Matte finish lipstick" },
+                { name: "Eyeshadow Palette", brand: "Urban Decay", country: "USA", price: "$54", category: "makeup", description: "12-shade eyeshadow palette" },
+                { name: "Blush Powder", brand: "NARS", country: "France", price: "$40", category: "makeup", description: "Natural flush blush" },
+                { name: "Highlighter", brand: "Fenty Beauty", country: "USA", price: "$38", category: "makeup", description: "Glowing highlighter powder" },
+                { name: "Bronzer", brand: "Too Faced", country: "USA", price: "$35", category: "makeup", description: "Matte bronzing powder" },
+                { name: "Eyeliner Pencil", brand: "Charlotte Tilbury", country: "UK", price: "$25", category: "makeup", description: "Waterproof eye pencil" },
+                { name: "Lip Gloss", brand: "Glossier", country: "USA", price: "$14", category: "makeup", description: "Clear lip gloss" },
+                { name: "Setting Spray", brand: "Urban Decay", country: "USA", price: "$33", category: "makeup", description: "Makeup setting spray" },
+                { name: "Primer", brand: "Smashbox", country: "USA", price: "$36", category: "makeup", description: "Photo finish face primer" },
+                { name: "Brow Gel", brand: "Benefit", country: "USA", price: "$24", category: "makeup", description: "Tinted brow gel" },
+                { name: "Contour Kit", brand: "Anastasia Beverly Hills", country: "USA", price: "$40", category: "makeup", description: "Contour and highlight kit" },
+                { name: "Setting Powder", brand: "Laura Mercier", country: "France", price: "$39", category: "makeup", description: "Translucent setting powder" },
+
+                // Hair Care Products
+                { name: "Argan Oil Shampoo", brand: "Moroccanoil", country: "Israel", price: "$26", category: "haircare", description: "Moisturizing shampoo" },
+                { name: "Deep Conditioner", brand: "Olaplex", country: "USA", price: "$28", category: "haircare", description: "Bond building treatment" },
+                { name: "Heat Protectant", brand: "TRESemmé", country: "UK", price: "$6", category: "haircare", description: "Thermal protection spray" },
+                { name: "Hair Oil", brand: "Moroccanoil", country: "Israel", price: "$48", category: "haircare", description: "Argan oil treatment" },
+                { name: "Dry Shampoo", brand: "Batiste", country: "UK", price: "$8", category: "haircare", description: "Oil-absorbing dry shampoo" },
+                { name: "Curl Cream", brand: "DevaCurl", country: "USA", price: "$28", category: "haircare", description: "Curl defining cream" },
+                { name: "Hair Mask", brand: "Kerastase", country: "France", price: "$56", category: "haircare", description: "Intensive repair mask" },
+                { name: "Leave-in Treatment", brand: "It's a 10", country: "USA", price: "$20", category: "haircare", description: "10-in-1 leave-in product" },
+                { name: "Volumizing Mousse", brand: "John Frieda", country: "UK", price: "$7", category: "haircare", description: "Root lift mousse" },
+                { name: "Hair Serum", brand: "Frizz Ease", country: "UK", price: "$9", category: "haircare", description: "Anti-frizz serum" },
+                { name: "Scalp Treatment", brand: "Briogeo", country: "USA", price: "$42", category: "haircare", description: "Scalp revival serum" },
+                { name: "Color Protecting Shampoo", brand: "Redken", country: "USA", price: "$25", category: "haircare", description: "Color-safe cleansing" },
+                { name: "Detangling Spray", brand: "Tangle Teezer", country: "UK", price: "$12", category: "haircare", description: "Knot-free detangler" },
+                { name: "Hair Growth Serum", brand: "The Ordinary", country: "Canada", price: "$17", category: "haircare", description: "Multi-peptide density serum" },
+                { name: "Texturizing Spray", brand: "Ouai", country: "USA", price: "$26", category: "haircare", description: "Beach wave spray" },
+
+                // Accessories/Tools
+                { name: "Jade Roller", brand: "Mount Lai", country: "USA", price: "$29", category: "accessories", description: "Facial massage tool" },
+                { name: "Beauty Blender", brand: "Beautyblender", country: "USA", price: "$20", category: "accessories", description: "Makeup sponge" },
+                { name: "Eyelash Curler", brand: "Shu Uemura", country: "Japan", price: "$22", category: "accessories", description: "Professional eyelash curler" },
+                { name: "Makeup Brushes Set", brand: "Real Techniques", country: "UK", price: "$25", category: "accessories", description: "Professional brush collection" },
+                { name: "Face Mask Brush", brand: "Tarte", country: "USA", price: "$18", category: "accessories", description: "Mask application brush" },
+                { name: "Hair Straightener", brand: "GHD", country: "UK", price: "$199", category: "accessories", description: "Professional hair iron" },
+                { name: "Curling Wand", brand: "Hot Tools", country: "USA", price: "$35", category: "accessories", description: "Ceramic curling iron" },
+                { name: "Konjac Sponge", brand: "The Konjac Sponge Co", country: "UK", price: "$8", category: "accessories", description: "Natural cleansing sponge" },
+                { name: "Tweezers", brand: "Tweezerman", country: "USA", price: "$25", category: "accessories", description: "Precision tweezers" },
+                { name: "Nail File Set", brand: "OPI", country: "USA", price: "$15", category: "accessories", description: "Professional nail files" },
+                { name: "Hair Brush", brand: "Wet Brush", country: "USA", price: "$12", category: "accessories", description: "Detangling hair brush" },
+                { name: "Facial Steamer", brand: "Panasonic", country: "Japan", price: "$89", category: "accessories", description: "Nano-ionic steamer" },
+                { name: "LED Face Mask", brand: "CurrentBody", country: "UK", price: "$385", category: "accessories", description: "Light therapy device" },
+                { name: "Headband Set", brand: "Kitsch", country: "USA", price: "$14", category: "accessories", description: "Spa headbands pack" },
+                { name: "Mirror with Lights", brand: "Impressions Vanity", country: "USA", price: "$149", category: "accessories", description: "Hollywood vanity mirror" }
+            ];
+
+            // Generate additional 2000+ products programmatically
+            const additionalBrands = [
+                'CeraVe', 'The Ordinary', 'Neutrogena', 'L\'Oréal', 'Maybelline', 'COSRX', 'Innisfree',
+                'Fenty Beauty', 'Rare Beauty', 'Glossier', 'Drunk Elephant', 'Paula\'s Choice', 'Tatcha',
+                'Shiseido', 'Lancôme', 'Estée Lauder', 'Chanel', 'Dior', 'YSL', 'MAC', 'Urban Decay',
+                'Too Faced', 'Benefit', 'NARS', 'Tarte', 'Charlotte Tilotte', 'Pat McGrath', 'Huda Beauty',
+                'Lakme', 'Sugar Cosmetics', 'Natura', 'O Boticário', 'Schwarzkopf', 'Wella', 'Kerastase',
+                'Moroccanoil', 'Olaplex', 'DevaCurl', 'Briogeo', 'Ouai', 'Living Proof', 'Redken',
+                'Matrix', 'Paul Mitchell', 'Tigi', 'Joico', 'Aveda', 'Bumble and Bumble', 'Pantene',
+                'TRESemmé', 'Garnier', 'Herbal Essences', 'Head & Shoulders', 'Aussie', 'Tigi',
+                'Oriflame', 'Faberlic', 'Avon', 'Mary Kay', 'Amway', 'Tupperware', 'Forever Living',
+                ```text
+Herbalife', 'Nu Skin', 'Jeunesse, 'Younique', 'Arbonne', 'Rodan + Fields',
+                'Clinique', 'Origins', 'Kiehl\'s', 'Fresh', 'Sephora Collection', 'Ulta Beauty',
+                'e.l.f.', 'NYX', 'Milani', 'ColourPop', 'Wet n Wild', 'Essence', 'Catrice',
+                'Rimmel', 'Bourjois', 'Max Factor', 'Revlon', 'Cover Girl', 'Almay', 'Black Radiance',
+                'Juvia\'s Place', 'Black Opal', 'Fashion Fair', 'IMAN', 'Zuri', 'Carol\'s Daughter',
+                'Shea Moisture', 'Cantu', 'Pattern', 'Fenty Skin', 'Mented', 'Uoma Beauty',
+                'Perfect Diary', 'Florasis', 'Colorkey', 'Into You', 'Zeesea', 'Judydoll',
+                'Peripera', 'Etude House', 'Missha', 'The Face Shop', 'Tony & Tina', 'Holika Holika',
+                'Beauty of Joseon', 'I\'m From', 'Purito', 'Some By Mi', 'Torriden', 'Benton',
+                'Dear Klairs', 'Heimish', 'Banila Co', 'Sulwhasoo', 'IOPE', 'Hera', 'Amore Pacific'
+            ];
+
+            const additionalCountries = [
+                'USA', 'France', 'Korea', 'Japan', 'Germany', 'UK', 'Italy', 'Brazil', 'India',
+                'Canada', 'Australia', 'Sweden', 'Norway', 'Denmark', 'Finland', 'Netherlands',
+                'Belgium', 'Switzerland', 'Austria', 'Spain', 'Portugal', 'Greece', 'Turkey',
+                'Israel', 'Morocco', 'Egypt', 'South Africa', 'Nigeria', 'Kenya', 'Ghana',
+                'China', 'Taiwan', 'Hong Kong', 'Singapore', 'Malaysia', 'Thailand', 'Indonesia',
+                'Philippines', 'Vietnam', 'Cambodia', 'Myanmar', 'Bangladesh', 'Sri Lanka',
+                'Pakistan', 'Iran', 'UAE', 'Saudi Arabia', 'Jordan', 'Lebanon', 'Mexico',
+                'Argentina', 'Colombia', 'Peru', 'Chile', 'Ecuador', 'Bolivia', 'Uruguay',
+                'Paraguay', 'Venezuela', 'Costa Rica', 'Panama', 'Guatemala', 'Honduras',
+                'Russia', 'Poland', 'Czech Republic', 'Hungary', 'Romania', 'Bulgaria',
+                'Croatia', 'Serbia', 'Slovenia', 'Slovakia', 'Estonia', 'Latvia', 'Lithuania'
+            ];
+
+            const productTypes = [
+                'Cleanser', 'Moisturizer', 'Serum', 'Toner', 'Mask', 'Sunscreen', 'Eye Cream',
+                'Foundation', 'Concealer', 'Powder', 'Blush', 'Highlighter', 'Bronzer',
+                'Mascara', 'Eyeliner', 'Eyeshadow', 'Lipstick', 'Lip Gloss', 'Lip Balm',
+                'Shampoo', 'Conditioner', 'Hair Mask', 'Hair Oil', 'Styling Cream', 'Hair Spray',
+                'Nail Polish', 'Base Coat', 'Top Coat', 'Cuticle Oil', 'Hand Cream',
+                'Perfume', 'Body Lotion', 'Body Wash', 'Deodorant', 'Body Oil',
+                'Hair Brush', 'Makeup Brush', 'Beauty Sponge', 'Tweezers', 'Mirror'
+            ];
+
+            // Generate 2000 additional products
+            for (let i = 0; i < 2000; i++) {
+                const brand = additionalBrands[Math.floor(Math.random() * additionalBrands.length)];
+                const country = additionalCountries[Math.floor(Math.random() * additionalCountries.length)];
+                const productType = productTypes[Math.floor(Math.random() * productTypes.length)];
+                const price = Math.floor(Math.random() * 150) + 5;
+
+                const categories = ['skincare', 'makeup', 'haircare', 'accessories', 'fragrance', 'nails'];
+                let category = 'skincare';
+
+                if (productType.includes('Foundation') || productType.includes('Mascara') || 
+                    productType.includes('Lipstick') || productType.includes('Blush') ||
+                    productType.includes('Concealer') || productType.includes('Powder') ||
+                    productType.includes('Highlighter') || productType.includes('Bronzer') ||
+                    productType.includes('Eyeliner') || productType.includes('Eyeshadow') ||
+                    productType.includes('Lip Gloss') || productType.includes('Lip Balm')) {
+                    category = 'makeup';
+                } else if (productType.includes('Shampoo') || productType.includes('Conditioner') ||
+                          productType.includes('Hair')) {
+                    category = 'haircare';
+                } else if (productType.includes('Nail') || productType.includes('Cuticle')) {
+                    category = 'nails';
+                } else if (productType.includes('Perfume') || productType.includes('Body') ||
+                          productType.includes('Deodorant')) {
+                    category = 'fragrance';
+                } else if (productType.includes('Brush') || productType.includes('Sponge') ||
+                          productType.includes('Tweezers') || productType.includes('Mirror')) {
+                    category = 'accessories';
+                }
+
+                coreProducts.push({
+                    name: `${brand} ${productType}`,
+                    brand: brand,
+                    country: country,
+                    price: `$${price}`,
+                    category: category,
+                    description: `Premium ${category} product from ${country}. Trusted by beauty experts worldwide for exceptional quality and results.`
+                });
+            }
+
+            allProducts = coreProducts;
+            filteredProducts = allProducts.slice(0, 50); // Show first 50 by default
+            displayProducts();
+            updateFilterCounts();
+
+            console.log(`✅ Generated ${allProducts.length} total products for massive database!`);
+        }
+
+        // Display products in grid
+        function displayProducts(append = false) {
+            const grid = document.getElementById('productsGrid');
+
+            if (!append) {
+                grid.innerHTML = '';
+                currentDisplayCount = 25;
+            }
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #666;">No products found. Try searching for "shampoo India" or "moisturizer Brazil".</div>';
+                updateLoadMoreButton();
+                return;
+            }
+
+            const productsToShow = append ? 
+                filteredProducts.slice(displayedProducts.length, displayedProducts.length + 25) :
+                filteredProducts.slice(0, currentDisplayCount);
+
+            if (!append) {
+                displayedProducts = [];
+            }
+
+            productsToShow.forEach((product, index) => {
+                const actualIndex = append ? displayedProducts.length + index : index;
+                const isSaved = userProfile.savedProducts && 
+                              userProfile.savedProducts.some(p => p.name === product.name);
+
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.style.cssText = 'width: 100%; box-sizing: border-box;';
+
+                // Ensure proper description display
+                const fullDescription = product.description || generateProductDescription(product);
+                const shortDescription = fullDescription.length > 80 ? 
+                    fullDescription.substring(0, 80) + '...' : fullDescription;
+
+                productCard.innerHTML = `
+                    <div class="product-image-container" style="width: 100%; height: 120px; margin-bottom: 12px; border-radius: 12px; overflow: hidden; background: #f0f0f0;">
+                        <div style="
+                             width: 100%;
+                             height: 100%;
+                             display: flex;
+                             align-items: center;
+                             justify-content: center;
+                             background: var(--premium-gradient);
+                             color: white;
+                             font-size: 18px;
+                             font-weight: 700;
+                             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                             transition: transform 0.3s;
+                             border-radius: 8px;
+                        " onmouseover="this.style.transform='scale(1.05)'"
+                           onmouseout="this.style.transform='scale(1)'">✨ Luminous AI</div>
+                    </div>
+                    <div class="product-category">${product.category || 'beauty'}</div>
+                    <div class="product-name" title="${product.name || 'Beauty Product'}">${product.name || 'Beauty Product'}</div>
+                    <div class="product-brand">${product.brand || 'Premium Brand'}</div>
+                    <div class="product-country">🌍 ${product.country || 'Global'}</div>
+                    <div class="product-description" title="${fullDescription}">${shortDescription}</div>
+                    <div class="product-footer">
+                        <div class="product-price">${product.price || '$25'}</div>
+                        <div class="product-actions">
+                            <button class="save-btn ${isSaved ? 'saved' : ''}" onclick="toggleSave(${actualIndex})" title="Save product">
+                                ${isSaved ? '💖' : '🤍'}
+                            </button>
+                            <button class="cart-btn" onclick="addToCart(${actualIndex})" title="Add to cart">
+                                🛒
+                            </button>
+                            <button class="info-btn" onclick="showProductDetails(${actualIndex})" title="View full details" style="background: var(--luminous-gold); border: none; border-radius: 15px; width: 30px; height: 30px; display: flex; align-items: center;justify-content: center; color: white; cursor: pointer; font-size: 12px; margin-left: 4px;">
+                                ℹ️
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(productCard);
+                displayedProducts.push(product);
+            });
+
+            updateLoadMoreButton();
+        }
+
+        // Load More Products functionality
+        function loadMoreProducts() {
+            if (displayedProducts.length < filteredProducts.length) {
+                displayProducts(true);
+                showToast(`📱 Loaded ${Math.min(25, filteredProducts.length - displayedProducts.length + 25)} more products!`);
+            }
+        }
+
+        // Update Load More button visibility and text
+        function updateLoadMoreButton() {
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const productCount = document.getElementById('productCount');
+
+            if (filteredProducts.length > displayedProducts.length) {
+                loadMoreContainer.style.display = 'block';
+                const remaining = filteredProducts.length - displayedProducts.length;
+                loadMoreBtn.innerHTML = `🌍 Load ${Math.min(25, remaining)} More Products`;
+                productCount.textContent = `Showing ${displayedProducts.length} of ${filteredProducts.length} products`;
+            } else {
+                loadMoreContainer.style.display = 'none';
+            }
+        }
+
+        // Add a "Search for More" button after each product card
+        function addSearchForMoreButton(productName, index) {
+            const grid = document.getElementById('productsGrid');
+            const moreButton = document.createElement('div');
+            moreButton.style.cssText = `
+                grid-column: 1 / -1;
+                text-align: center;
+                margin-top: 10px;
+            `;
+            moreButton.innerHTML = `
+                <button onclick="searchProducts('${productName}')" style="
+                    background: var(--premium-gradient);
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    font-size: 12px;
+                ">
+                    🔍 Find Similar
+                </button>
+            `;
+            grid.appendChild(moreButton);
+        }
+
+        // Show detailed product information
+        function showProductDetails(index) {
+            const product = filteredProducts[index];
+
+            const detailsHTML = `
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                    <div style="background: white; border-radius: 20px; padding: 20px; max-width: 90%; max-height: 80%; overflow-y: auto; position: relative;">
+                        <button onclick="closeProductDetails()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">×</button>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="background: var(--luminous-gold); color: white; padding: 4px 8px; border-radius: 12px; display: inline-block; margin-bottom: 8px; font-size: 10px; text-transform: uppercase; font-weight: 600;">${product.category || 'beauty'}</div>
+                            <h2 style="color: var(--primary-charcoal); margin-bottom: 4px;">${product.name || 'Beauty Product'}</h2>
+                            <p style="color: #666; margin-bottom: 4px;">${product.brand || 'Unknown Brand'}</p>
+                            <p style="color: var(--luminous-gold); font-weight: 600; margin-bottom: 16px;">🌍 ${product.country || 'Global'}</p>
+                            <div style="font-size: 24px; color: var(--luminous-gold); font-weight: 700; margin-bottom: 16px;">${product.price || '$0'}</div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--primary-charcoal); margin-bottom: 8px;">Description</h3>
+                            <p style="color: #666; line-height: 1.4;">${product.description || 'Premium beauty product with high-quality ingredients.'}</p>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <button onclick="toggleSave(${index}); closeProductDetails();" style="background: #ff69b4; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer;">💖 Save</button>
+                            <button onclick="addToCart(${index}); closeProductDetails();" style="background: var(--premium-gradient); color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: bold;">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', detailsHTML);
+        }
+
+        function closeProductDetails() {
+            const overlay = document.querySelector('[style*="position: fixed"][style*="z-index: 10000"]');
+            if (overlay) overlay.remove();
+        }
+
+        // Filter products by category
+        function filterProducts(category, element) {
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+
+            // Find the clicked element or use the element parameter
+            const activeTab = element || document.querySelector(`[onclick*="filterProducts('${category}')"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+
+            console.log(`🔍 Filtering by category: ${category}`);
+            console.log(`📊 Total products available: ${allProducts.length}`);
+
+            if (category === 'all') {
+                filteredProducts = allProducts.slice(); // Show all products
+            } else {
+                // More flexible category matching
+                filteredProducts = allProducts.filter(product => {
+                    const productCategory = (product.category || '').toLowerCase();
+                    const searchCategory = category.toLowerCase();
+
+                    // Direct match
+                    if (productCategory === searchCategory) return true;
+
+                    // Handle alternative category names
+                    if (searchCategory === 'haircare' && (productCategory === 'hair care' || productCategory === 'hair')) return true;
+                    if (searchCategory === 'accessories' && (productCategory === 'tools' || productCategory === 'accessories')) return true;
+                    if (searchCategory === 'makeup' && productCategory === 'cosmetics') return true;
+
+                    return false;
+                });
+            }
+
+            console.log(`📱 Filtered products count: ${filteredProducts.length}`);
+
+            displayedProducts = [];
+            currentDisplayCount = 25;
+            displayProducts();
+            updateFilterCounts();
+
+            const categoryName = category === 'all' ? 'products' : category;
+            showToast(`📱 Showing ${filteredProducts.length} ${categoryName} products`);
+        }
+
+        // Update filter tab counts
+        function updateFilterCounts() {
+            const tabs = document.querySelectorAll('.filter-tab');
+            const categories = ['all', 'skincare', 'makeup', 'haircare', 'accessories'];
+
+            tabs.forEach((tab, index) => {
+                const category = categories[index];
+                let count;
+
+                if (category === 'all') {
+                    count = allProducts.length;
+                } else {
+                    count = allProducts.filter(p => p.category.toLowerCase() === category).length;
+                }
+
+                const currentText = tab.textContent.split(' (')[0];
+                tab.textContent = `${currentText} (${count})`;
+            });
+        }
+
+        // Enhanced search functionality with specific filtering and more results
+        async function searchProducts(query) {
+            // Use passed query or get from input if not provided
+            if (typeof query === 'undefined') {
+                query = document.getElementById('searchInput').value.trim();
+            }
+
+            if (query === '') {
+                filteredProducts = allProducts.slice(0, 25); // Reset to first 25
+                displayProducts();
+                showToast('📱 Showing first 25 products. Search for specific items!');
+                return;
+            }
+
+            // Show loading state
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #666;">🔍 Searching for products...</div>';
+
+            try {
+                console.log(`🔍 Searching for: "${query}"`);
+
+                // First, try local search for immediate results
+                const localResults = allProducts.filter(product => 
+                    product.name.toLowerCase().includes(query.toLowerCase()) ||
+                    product.brand.toLowerCase().includes(query.toLowerCase()) ||
+                    product.description.toLowerCase().includes(query.toLowerCase()) ||
+                    product.category.toLowerCase().includes(query.toLowerCase()) ||
+                    product.country.toLowerCase().includes(query.toLowerCase())
+                );
+
+                // Specific category filtering for precise searches
+                let specificResults = [];
+                const lowerQuery = query.toLowerCase();
+
+                if (lowerQuery.includes('shampoo')) {
+                    specificResults = allProducts.filter(p => 
+                        p.name.toLowerCase().includes('shampoo') || 
+                        p.description.toLowerCase().includes('shampoo') ||
+                        p.category === 'haircare'
+                    );
+                } else if (lowerQuery.includes('moisturizer') || lowerQuery.includes('cream')) {
+                    specificResults = allProducts.filter(p => 
+                        p.name.toLowerCase().includes('moisturizer') || 
+                        p.name.toLowerCase().includes('cream') ||
+                        p.description.toLowerCase().includes('moisturizer')
+                    );
+                } else if (lowerQuery.includes('lipstick') || lowerQuery.includes('lip')) {
+                    specificResults = allProducts.filter(p => 
+                        p.name.toLowerCase().includes('lip') || 
+                        p.description.toLowerCase().includes('lip')
+                    );
+                } else if (lowerQuery.includes('foundation') || lowerQuery.includes('makeup')) {
+                    specificResults = allProducts.filter(p => 
+                        p.name.toLowerCase().includes('foundation') || 
+                        p.category === 'makeup'
+                    );
+                }
+
+                // Use specific results if available, otherwise use local results
+                let initialResults = specificResults.length > 0 ? specificResults : localResults;
+
+                if (initialResults.length > 0) {
+                    filteredProducts = initialResults;
+                    displayProducts();
+                    addMoreResultsButton(query, initialResults.length);
+                    showToast(`🔍 Found ${initialResults.length} products for "${query}"`);
+                } else {
+                    // Try API search for broader results
+                    await searchWithAPI(query);
+                }
+
+            } catch (error) {
+                console.error('🚨 Search error:', error);
+                filteredProducts = [];
+                displayProducts();
+                showToast(`❌ Search failed. Try "shampoo", "moisturizer", or "lipstick"`);
+            }
+        }
+
+        // API-based search for broader results
+        async function searchWithAPI(query) {
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        message: `Find specific beauty products for: ${query}. Only show products that directly match this search term.`,
+                        includeProducts: true,
+                        maxProducts: 25 // Ensure minimum 25 products in search results
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.products && data.products.length > 0) {
+                    filteredProducts = data.products.map(product => ({
+                        ...product,
+                        description: product.description || generateProductDescription(product)
+                    }));
+
+                    displayProducts();
+                    addMoreResultsButton(query, filteredProducts.length);
+                    showToast(`🌍 Found ${filteredProducts.length} products for "${query}" globally!`);
+                } else {
+                    filteredProducts = [];
+                    displayProducts();
+                    showToast(`❌ No products found for "${query}". Try "skincare", "makeup", or "haircare"`);
+                }
+            } catch (error) {
+                console.error('API search failed:', error);
+                filteredProducts = [];
+                displayProducts();
+                showToast(`❌ No products found for "${query}"`);
+            }
+        }
+
+        // Add "More Results" button
+        function addMoreResultsButton(query, currentCount) {
+            const grid = document.getElementById('productsGrid');
+
+            // Remove existing more button
+            const existingBtn = document.querySelector('.more-results-btn');
+            if (existingBtn) existingBtn.remove();
+
+            if (currentCount > 0) {
+                const moreBtn = document.createElement('div');
+                moreBtn.className = 'more-results-btn';
+                moreBtn.style.cssText = `
+                    grid-column: 1 / -1;
+                    text-align: center;
+                    padding: 20px;
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                `;
+
+                moreBtn.innerHTML = `
+                    <div style="color: var(--luminous-gold); font-weight: 600; margin-bottom: 8px;">
+                        🔍 Found ${currentCount} results for "${query}"
+                    </div>
+                    <button onclick="loadMoreResults('${query}')" style="
+                        background: var(--premium-gradient);
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 20px;
+                        cursor: pointer;
+                        font-weight: 600;
+                    ">
+                        🌍 Search for More Results
+                    </button>
+                `;
+
+                moreBtn.addEventListener('mouseenter', () => {
+                    moreBtn.style.transform = 'translateY(-2px)';
+                });
+
+                moreBtn.addEventListener('mouseleave', () => {
+                    moreBtn.style.transform = 'translateY(0)';
+                });
+
+                grid.appendChild(moreBtn);
+            }
+        }
+
+        // Load more results function
+        async function loadMoreResults(query) {
+            showToast('🔍 Searching for more products...');
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        message: `Find 50 diverse beauty products related to: ${query}. Include international brands from different countries.`,
+                        includeProducts: true,
+                        maxProducts: 50
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.products && data.products.length > 0) {
+                    // Merge with existing results, avoiding duplicates
+                    const newProducts = data.products.filter(newProduct => 
+                        !filteredProducts.some(existing => existing.name === newProduct.name)
+                    );
+
+                    filteredProducts = [...filteredProducts, ...newProducts];
+                    displayProducts();
+                    showToast(`🌍 Found ${newProducts.length} additional products! Total: ${filteredProducts.length}`);
+                } else {
+                    showToast('❌ No additional products found');
+                }
+            } catch (error) {
+                console.error('Load more error:', error);
+                showToast('❌ Failed to load more results');
+            }
+        }
+
+        // Enhanced search with broader terms
+        async function searchWithBroaderTerms(originalQuery) {
+            try {
+                const broaderQuery = `Show me beauty products similar to ${originalQuery} from different countries and brands`;
+
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        message: broaderQuery,
+                        includeProducts: true,
+                        maxProducts: 30
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.products && data.products.length > 0) {
+                    filteredProducts = data.products.map(product => ({
+                        ...product,
+                        description: product.description || generateProductDescription(product)
+                    }));
+                    showToast(`🌍 Found ${filteredProducts.length} related products for "${originalQuery}"!`);
+                } else {
+                    filteredProducts = [];
+                    showToast(`❌ No products found for "${originalQuery}". Try "skincare", "makeup", or "haircare".`);
+                }
+            } catch (error) {
+                console.error('Broader search failed:', error);
+                filteredProducts = [];
+                showToast(`❌ No products found for "${originalQuery}".`);
+            }
+        }
+
+        // Add country-specific search
+        async function searchByCountry(country) {
+            try {
+                const response = await fetch(`/api/products/country/${country}?limit=20`);
+                const data = await response.json();
+
+                if (data.success && data.products && data.products.length > 0) {
+                    filteredProducts = data.products;
+                    displayProducts();
+                    showToast(`🌍 Found ${data.products.length} products from ${country}!`);
+                } else {
+                    showToast(`No products found from ${country}`);
+                }
+            } catch (error) {
+                console.error('Country search error:', error);
+                showToast('Search failed. Please try again.');
+            }
+        }
+
+        // Add category-specific search
+        async function searchByCategory(category) {
+            try {
+                const response = await fetch(`/api/products/category/${category}?limit=20`);
+                const data = await response.json();
+
+                if (data.success && data.products && data.products.length > 0) {
+                    filteredProducts = data.products;
+                    displayProducts();
+                    showToast(`📱 Found ${data.products.length} ${category} products!`);
+                } else {
+                    showToast(`No ${category} products found`);
+                }
+            } catch (error) {
+                console.error('Category search error:', error);
+                showToast('Search failed. Please try again.');
+            }
+        }
+
+        // Save/unsave products
+        function toggleSave(index) {
+            const product = filteredProducts[index];
+
+            if (!userProfile.savedProducts) {
+                userProfile.savedProducts = [];
+            }
+
+            const existingIndex = userProfile.savedProducts.findIndex(p => p.name === product.name);
+
+            if (existingIndex > -1) {
+                userProfile.savedProducts.splice(existingIndex, 1);
+            } else {
+                userProfile.savedProducts.push(product);
+            }
+
+            localStorage.setItem('beautyProfile', JSON.stringify(userProfile));
+            displayProducts();
+
+            const action = existingIndex > -1 ? 'removed from' : 'saved to';
+            showToast(`💖 ${product.name} ${action} your collection!`);
+        }
+
+        // Add products to cart
+        function addToCart(index) {
+            const product = filteredProducts[index];
+
+            const existingItem = cart.find(item => item.name === product.name);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1,
+                    addedAt: new Date().toISOString()
+                });
+            }
+
+            localStorage.setItem('beautyCart', JSON.stringify(cart));
+            updateCartCount();
+
+            showToast(`🛒 ${product.name} added to cart!`);
+
+            // Visual feedback
+            const cartBtn = event.target;
+            const originalContent = cartBtn.innerHTML;
+            cartBtn.innerHTML = '✓';
+            cartBtn.classList.add('added');
+
+            setTimeout(() => {
+                cartBtn.innerHTML = originalContent;
+                cartBtn.classList.remove('added');
+            }, 1000);
+        }
+
+        // Show saved products
+        function showSavedProducts() {
+            if (!userProfile.savedProducts || userProfile.savedProducts.length === 0) {
+                showToast('💖 No saved products yet! Start exploring and save your favorites!');
+                return;
+            }
+
+            filteredProducts = userProfile.savedProducts;
+            displayProducts();
+
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+        }
+
+        // Cart functionality
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCount = document.getElementById('cartCount');
+            cartCount.textContent = totalItems;
+            cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+        }
+
+        function showCart() {
+            if (cart.length === 0) {
+                showToast('🛒 Your cart is empty! Add some beauty products to get started!');
+                return;
+            }
+
+            const cartTotal = cart.reduce((total, item) => {
+                const price = parseFloat(item.price.replace(/[^0-9.]/g, '')) || 0;
+                return total + (price * item.quantity);
+            }, 0);
+
+            let cartHTML = `
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: white; border-radius: 20px; padding: 20px; max-width: 90%; max-height: 80%; overflow-y: auto; position: relative;">
+                        <button onclick="closeCart()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer;">×</button>
+                        <h2 style="color: var(--primary-charcoal); margin-bottom: 20px;">🛒 Your Cart</h2>
+                        <div style="margin-bottom: 20px;">
+            `;
+
+            cart.forEach((item, index) => {
+                cartHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: var(--primary-charcoal);">${item.name}</div>
+                            <div style="font-size: 12px; color: #666;">${item.brand} - ${item.country}</div>
+                            <div style="color: var(--luminous-gold); font-weight: bold;">${item.price} × ${item.quantity}</div>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <button onclick="updateQuantity(${index}, -1)" style="background: var(--luminous-gold); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer;">-</button>
+                            <span style="min-width: 20px; text-align: center;">${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, 1)" style="background: var(--luminous-gold); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer;">+</button>
+                            <button onclick="removeFromCart(${index})" style="background: #ff4444; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer;">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartHTML += `
+                        </div>
+                        <div style="border-top: 2px solid var(--luminous-gold); padding-top: 15px; text-align: center;">
+                            <div style="font-size: 18px; font-weight: bold; color: var(--primary-charcoal);margin-bottom: 15px;">
+                                Total: $${cartTotal.toFixed(2)}
+                            </div>
+                            <div style="display: flex; gap: 10px; justify-content: center;">
+                                <button onclick="clearCart()" style="background: #666; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer;">Clear Cart</button>
+                                <button onclick="checkout()" style="background: var(--premium-gradient); color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: bold;">Checkout 💳</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', cartHTML);
+        }
+
+        function closeCart() {
+            const overlay = document.querySelector('[style*="position: fixed"][style*="z-index: 10000"]');
+            if (overlay) overlay.remove();
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+
+            if (cart[index].quantity <= 0) {
+                removeFromCart(index);
+                return;
+            }
+
+            localStorage.setItem('beautyCart', JSON.stringify(cart));
+            showCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('beautyCart', JSON.stringify(cart));
+            updateCartCount();
+            showCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            localStorage.setItem('beautyCart', JSON.stringify(cart));
+            updateCartCount();
+            closeCart();
+            showToast('🛒 Your cart has been cleared!');
+        }
+
+        function checkout() {
+            showToast('💳 Checkout process initiated! Redirecting to secure payment gateway...');
+            setTimeout(() => {
+                showToast('✅ Payment successful! Your order has been placed.');
+                clearCart();
+            }, 3000);
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0,0,0,0.7);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 25px;
+                z-index: 10000;
+                font-size: 14px;
+                opacity: 0;
+                transition: opacity 0.3s;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // Fade in
+            setTimeout(() => {
+                toast.style.opacity = 1;
+            }, 100);
+
+            // Fade out after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = 0;
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Navigation
+        function goToPage(page) {
+            window.location.href = page;
+        }
+
+        // Translation functionality
+        function toggleTranslator() {
+            isTranslatorOpen = !isTranslatorOpen;
+            const dropdown = document.getElementById('translatorDropdown');
+            dropdown.style.display = isTranslatorOpen ? 'block' : 'none';
+        }
+
+        async function translateContent() {
+            const language = document.getElementById('languageSelect').value;
+
+            document.querySelectorAll('.product-name, .product-brand, .product-description').forEach(async element => {
+                const originalText = element.textContent;
+
+                if (!originalTexts.has(element)) {
+                    originalTexts.set(element, originalText);
+                }
+
+                try {
+                    const response = await fetch('/api/translate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            text: originalText,
+                            targetLanguage: language
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        element.textContent = data.translation;
+                    } else {
+                        console.error('Translation failed:', data.error);
+                        element.textContent = originalTexts.get(element) || originalText;
+                        showToast('❌ Translation failed. Using original text.');
+                    }
+                } catch (error) {
+                    console.error('Translation error:', error);
+                    element.textContent = originalTexts.get(element) || originalText;
+                    showToast('❌ Translation error. Using original text.');
+                }
+            });
+        }
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            updateCartCount();
+
+            // Immediately filter by 'all' on page load to show initial products
+            filterProducts('all', document.querySelector('.filter-tab.active'));
+        });
+    </script>
+</body>
+</html>

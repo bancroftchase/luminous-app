@@ -1,95 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Beauty Chat - Luminous AI</title>
-  <meta name="theme-color" content="#B8860B" />
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: Arial, sans-serif; background:#2C2C2C; color:#fff; }
-    .container { max-width:414px; margin:auto; background:#2C2C2C; min-height:100vh; display:flex; flex-direction:column; }
-    .header { background:#2C2C2C; padding:20px; text-align:center; border-bottom:1px solid #444; position:relative; }
-    .back-btn { position:absolute; left:20px; top:20px; background:linear-gradient(135deg,#B8860B,#DAA520); color:#fff; border:none; border-radius:20px; padding:6px 12px; cursor:pointer; }
-    .logo { font-size:24px; font-weight:bold; background:linear-gradient(135deg,#B8860B,#DAA520); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .chat-area { flex:1; overflow-y:auto; padding:20px; background:#F8F8F8; color:#333; }
-    .message { margin-bottom:12px; display:flex; }
-    .message.user { justify-content:flex-end; }
-    .bubble { max-width:75%; padding:12px 16px; border-radius:16px; line-height:1.4; }
-    .bubble.user { background:#DAA520; color:#2C2C2C; border-bottom-right-radius:4px; }
-    .bubble.bot  { background:#444; color:#fff; }
-    .message-form { display:flex; border-top:1px solid #444; background:#2C2C2C; }
-    .message-input { flex:1; padding:12px; border:none; border-radius:20px; margin:10px; }
-    .send-btn { background:linear-gradient(135deg,#B8860B,#DAA520); border:none; padding:12px 16px; border-radius:20px; color:#fff; font-weight:bold; margin:10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminous AI - Beauty Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-charcoal: #2C2C2C;
+            --luminous-gold: #B8860B;
+            --pearl-white: #F8F8F8;
+            --premium-gradient: linear-gradient(135deg, #B8860B, #DAA520);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--primary-charcoal);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: var(--pearl-white);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .header {
+            background: var(--primary-charcoal);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #3A3A3A;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            background: var(--premium-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .chat-area {
+            padding: 20px;
+            min-height: calc(100vh - 180px);
+            padding-bottom: 100px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            background: var(--premium-gradient);
+            color: white;
+            margin-left: auto;
+        }
+        
+        .bot-message {
+            background: #e0e0e0;
+            margin-right: auto;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .product-image {
+            height: 100px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-price {
+            color: var(--luminous-gold);
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .product-country {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 414px;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #ddd;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+        }
+        
+        button {
+            background: var(--premium-gradient);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .load-more {
+            background: var(--premium-gradient);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            margin: 20px auto;
+            display: block;
+            cursor: pointer;
+        }
+        
+        .typing-indicator {
+            display: inline-block;
+            padding: 10px;
+        }
+        
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--luminous-gold);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <button class="back-btn" onclick="location.href='index.html'">← Back</button>
-      <div class="logo">✨ Luminous AI</div>
+    <div class="container">
+        <div class="header">
+            <a class='back-btn' href='/index.html'>←</a>
+            <div class="logo">Luminous AI</div>
+        </div>
+        
+        <div class="chat-area" id="chatArea">
+            <!-- Messages will appear here -->
+        </div>
+        
+        <div class="input-area">
+            <div class="input-container">
+                <input type="text" id="messageInput" placeholder="Ask about beauty products...">
+                <button id="sendButton">→</button>
+            </div>
+        </div>
     </div>
 
-    <div id="chatArea" class="chat-area">
-      <div class="message bot">
-        <div class="bubble bot">Hi! Ask me about beauty products.</div>
-      </div>
-    </div>
-
-    <form id="messageForm" class="message-form">
-      <input id="messageInput" class="message-input" type="text" placeholder="Type your message…" autocomplete="off"/>
-      <button type="submit" class="send-btn">Send</button>
-    </form>
-  </div>
-
-  <script>
-    // Serverless endpoint on Vercel
-    const API_PATH = '/api/ask';
-
-    function addMessage(text, sender) {
-      const msg = document.createElement('div');
-      msg.className = 'message ' + sender;
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble ' + sender;
-      bubble.textContent = text;
-      msg.appendChild(bubble);
-      document.getElementById('chatArea').appendChild(msg);
-      msg.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    async function sendToBackend(message) {
-      addMessage(message, 'user');
-      try {
-        const res = await fetch(`${API_PATH}?message=${encodeURIComponent(message)}`);
-        const json = await res.json();
-        if (json.error) {
-          addMessage('Error: ' + json.error, 'bot');
-        } else if (json.products?.length) {
-          json.products.forEach(p =>
-            addMessage(`${p.name} — ${p.price}\n${p.description}\n(${p.country})`, 'bot')
-          );
-        } else {
-          addMessage('No products found.', 'bot');
-        }
-      } catch (e) {
-        addMessage('Error: ' + e.message, 'bot');
-      }
-    }
-
-    document.getElementById('messageForm')
-      .addEventListener('submit', e => {
-        e.preventDefault();
-        const input = document.getElementById('messageInput');
-        const txt = input.value.trim();
-        if (!txt) return;
-        input.value = '';
-        sendToBackend(txt);
-      });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const q = new URLSearchParams(location.search).get('query') || 'Home';
-      sendToBackend(q);
-    });
-  </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatArea = document.getElementById('chatArea');
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            
+            let allProducts = [];
+            let displayedProducts = 0;
+            const productsPerPage = 10;
+            let currentQuery = '';
+            
+            // Handle URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('query');
+            
+            if (query) {
+                currentQuery = decodeURIComponent(query);
+                messageInput.value = currentQuery;
+                processQuery(currentQuery);
+            }
+            
+            // Send message on button click
+            sendButton.addEventListener('click', function() {
+                const message = messageInput.value.trim();
+                if (message) {
+                    currentQuery = message;
+                    processQuery(message);
+                }
+            });
+            
+            // Send message on Enter key
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const message = messageInput.value.trim();
+                    if (message) {
+                        currentQuery = message;
+                        processQuery(message);
+                    }
+                }
+            });
+            
+            function processQuery(query) {
+                // Clear previous results
+                chatArea.innerHTML = '';
+                allProducts = [];
+                displayedProducts = 0;
+                
+                // Add user message
+                addMessage(query, 'user');
+                messageInput.value = '';
+                
+                // Show typing indicator
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot-message typing-indicator';
+                typingDiv.innerHTML = `
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                `;
+                chatArea.appendChild(typingDiv);
+                chatArea.scrollTop = chatArea.scrollHeight;
+                
+                // Fixed API call with better error handling
+                fetch(`/.netlify/functions/ask?message=${encodeURIComponent(query)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    // Check if response is ok
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    // Get the content type
+                    const contentType = response.headers.get('content-type');
+                    
+                    return response.text().then(text => {
+                        // Check if response is HTML (error page)
+                        if (text.trim().startsWith('<!DOCTYPE html>') || text.trim().startsWith('<html')) {
+                            console.error('HTML response received:', text.substring(0, 200));
+                            throw new Error('Function not found or service unavailable');
+                        }
+                        
+                        // Check if response is empty
+                        if (!text.trim()) {
+                            throw new Error('Empty response from server');
+                        }
+                        
+                        // Try to parse as JSON
+                        try {
+                            return JSON.parse(text);
+                        } catch (parseError) {
+                            console.error('JSON parse error:', parseError);
+                            console.error('Response text:', text.substring(0, 200));
+                            throw new Error('Invalid JSON response from server');
+                        }
+                    });
+                })
+                .then(data => {
+                    // Remove typing indicator
+                    const typing = document.querySelector('.typing-indicator');
+                    if (typing) typing.remove();
+                    
+                    // Handle error responses
+                    if (data.error) {
+                        addMessage(data.error, 'bot');
+                        return;
+                    }
+                    
+                    // Handle no products
+                    if (!data.products || data.products.length === 0) {
+                        addMessage("No products found. Try different search terms.", 'bot');
+                        return;
+                    }
+                    
+                    allProducts = data.products;
+                    
+                    // Show how many products found
+                    const countries = [...new Set(allProducts.map(p => p.country || 'Global'))];
+                    addMessage(`Found ${allProducts.length} products from ${countries.length} countries:`, 'bot');
+                    
+                    // Display first page of products
+                    displayProducts();
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    
+                    // Remove typing indicator
+                    const typing = document.querySelector('.typing-indicator');
+                    if (typing) typing.remove();
+                    
+                    // Show user-friendly error message
+                    let errorMessage = "Sorry, I couldn't process your request. ";
+                    
+                    if (error.message.includes('Function not found')) {
+                        errorMessage += "The beauty product service is currently unavailable.";
+                    } else if (error.message.includes('HTTP error')) {
+                        errorMessage += "Server error occurred. Please try again later.";
+                    } else if (error.message.includes('Invalid JSON')) {
+                        errorMessage += "There was a communication error with the server.";
+                    } else {
+                        errorMessage += "Please check your connection and try again.";
+                    }
+                    
+                    addMessage(errorMessage, 'bot');
+                });
+            }
+            
+            function displayProducts() {
+                const productsToShow = allProducts.slice(displayedProducts, displayedProducts + productsPerPage);
+                displayedProducts += productsToShow.length;
+                
+                const grid = document.createElement('div');
+                grid.className = 'product-grid';
+                
+                productsToShow.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <div class="product-image">
+                            ${product.image ? `<img src="${product.image}" alt="${product.name}" onerror="this.parentElement.innerHTML='✨'">` : '✨'}
+                        </div>
+                        <strong>${product.name || 'Premium Product'}</strong>
+                        <div class="product-brand">${product.brand || 'Premium Brand'}</div>
+                        <div class="product-price">${product.price || '$25.00'}</div>
+                        <div class="product-country">
+                            ${getCountryFlag(product.country)} ${product.country || 'Global'}
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+                
+                chatArea.appendChild(grid);
+                
+                // Add "Load More" button if there are more products
+                if (displayedProducts < allProducts.length) {
+                    const loadMoreBtn = document.createElement('button');
+                    loadMoreBtn.className = 'load-more';
+                    loadMoreBtn.textContent = `Load More (${allProducts.length - displayedProducts} remaining)`;
+                    loadMoreBtn.onclick = displayProducts;
+                    chatArea.appendChild(loadMoreBtn);
+                }
+                
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+            
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                messageDiv.textContent = text;
+                chatArea.appendChild(messageDiv);
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+            
+            function getCountryFlag(country) {
+                if (!country) return '🌍';
+                const flagMap = {
+                    'USA': '🇺🇸', 'UK': '🇬🇧', 'France': '🇫🇷', 'Germany': '🇩🇪',
+                    'Japan': '🇯🇵', 'South Korea': '🇰🇷', 'China': '🇨🇳', 'Italy': '🇮🇹',
+                    'Spain': '🇪🇸', 'Brazil': '🇧🇷', 'Canada': '🇨🇦', 'Australia': '🇦🇺',
+                    'Russia': '🇷🇺', 'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Denmark': '🇩🇰',
+                    'South Africa': '🇿🇦', 'Mexico': '🇲🇽', 'India': '🇮🇳'
+                };
+                return flagMap[country] || '🌍';
+            }
+        });
+    </script>
 </body>
 </html>
